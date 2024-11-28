@@ -1,11 +1,13 @@
 const fetch = require('node-fetch');
 
-const WASHINGTON_DC_LOCATION_KEY = '328328'; // Location key for Washington DC
+// Latitude and Longitude for Washington DC
+const LATITUDE = 38.9072;
+const LONGITUDE = -77.0369;
 const API_KEY = process.env.ACCUWEATHER_API_KEY;
 
 exports.handler = async function () {
-    const API_URL = `https://dataservice.accuweather.com/forecasts/v1/minute/${WASHINGTON_DC_LOCATION_KEY}?apikey=${API_KEY}`;
-    
+    const API_URL = `https://dataservice.accuweather.com/forecasts/v1/minute?apikey=${API_KEY}&q=${LATITUDE},${LONGITUDE}`;
+
     try {
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -26,4 +28,3 @@ exports.handler = async function () {
         };
     }
 };
-
