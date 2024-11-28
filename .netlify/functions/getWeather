@@ -1,0 +1,29 @@
+const fetch = require('node-fetch');
+
+const WASHINGTON_DC_LOCATION_KEY = '328328'; // Location key for Washington DC
+const API_KEY = process.env.ACCUWEATHER_API_KEY;
+
+exports.handler = async function () {
+    const API_URL = `https://dataservice.accuweather.com/forecasts/v1/minute/${WASHINGTON_DC_LOCATION_KEY}?apikey=${API_KEY}`;
+    
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            return {
+                statusCode: response.status,
+                body: JSON.stringify({ error: 'Failed to fetch weather data' }),
+            };
+        }
+        const weatherData = await response.json();
+        return {
+            statusCode: 200,
+            body: JSON.stringify(weatherData),
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message }),
+        };
+    }
+};
+
