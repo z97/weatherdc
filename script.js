@@ -1,5 +1,6 @@
-const API_BASE = 'https://api.openweathermap.org/data/2.5/weather';
-const CITY = 'Washington,DC,US';
+const API_BASE = 'https://api.openweathermap.org/data/3.0/onecall';
+const LAT = 38.9072; // Latitude for Washington DC
+const LON = -77.0369; // Longitude for Washington DC
 
 async function fetchWeather() {
     const API_KEY = await getApiKey();
@@ -9,19 +10,28 @@ async function fetchWeather() {
     }
 
     try {
-        const response = await fetch(`${API_BASE}?q=${CITY}&units=metric&appid=${API_KEY}`);
+        const response = await fetch(`${API_BASE}?lat=${LAT}&lon=${LON}&exclude=minutely,hourly&units=metric&appid=${API_KEY}`);
         const data = await response.json();
 
-        if (data.cod !== 200) {
-            throw new Error(data.message);
+        if (!data.current) {
+            throw new Error("Failed to fetch weather data.");
         }
 
         const weatherHTML = `
-            <h2>${data.name}</h2>
-            <p>${data.weather[0].description}</p>
-            <p>Temperature: ${data.main.temp}°C</p>
-            <p>Humidity: ${data.main.humidity}%</p>
-            <p>Wind Speed: ${data.wind.speed} m/s</p>
+            <h2>Current Weather</h2>
+            <p>Temperature: ${data.current.temp}°C</p>
+            <p>${data.current.weather[0].description}</p>
+            <p>Humidity: ${data.current.humidity}%</p>
+            <p>Wind Speed: ${data.current.wind_speed} m/s</p>
+            <h3>Daily Forecast</h3>
+            ${data.daily.slice(0, 3).map(day => `
+                <div>
+                    <p>Date: ${new Date(day.dt * 1000).toLocaleDateString()}</p>
+                    <p>Day Temp: ${day.temp.day}°C</p>
+                    <p>Night Temp: ${day.temp.night}°C</p>
+                    <p>Condition: ${day.weather[0].description}</p>
+                </div>
+            `).join('')}
         `;
         document.getElementById('weather').innerHTML = weatherHTML;
     } catch (error) {
@@ -41,3 +51,4 @@ async function getApiKey() {
 }
 
 fetchWeather();
+
