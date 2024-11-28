@@ -10,18 +10,26 @@ exports.handler = async function () {
 
     try {
         const response = await fetch(API_URL);
+
         if (!response.ok) {
+            const errorText = await response.text(); // Read full response for debugging
+            console.error("API Error Response:", errorText);
             return {
                 statusCode: response.status,
-                body: JSON.stringify({ error: 'Failed to fetch weather data' }),
+                body: JSON.stringify({
+                    error: `API Error: ${response.status}`,
+                    message: errorText,
+                }),
             };
         }
+
         const weatherData = await response.json();
         return {
             statusCode: 200,
             body: JSON.stringify(weatherData),
         };
     } catch (error) {
+        console.error("Fetch Error:", error); // Log fetch error for debugging
         return {
             statusCode: 500,
             body: JSON.stringify({ error: error.message }),
