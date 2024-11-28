@@ -1,4 +1,4 @@
-const WEATHER_API_URL = '/.netlify/functions/getWeather'; // Proxy to Netlify Function
+const WEATHER_API_URL = '/.netlify/functions/getWeather.js'; // Proxy to Netlify Function
 const weatherDiv = document.getElementById('weather');
 
 async function fetchWeather() {
