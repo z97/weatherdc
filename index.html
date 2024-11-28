@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather in Washington DC</title>
+    <title>Washington DC Weather</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            margin: 0;
         }
         #weather {
-            margin-top: 50px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Weather in Washington DC</h1>
-    <div id="weather">
-        <p>Loading...</p>
-    </div>
+    <h1>Washington DC Weather</h1>
+    <div id="weather">Loading...</div>
     <script src="script.js"></script>
-    <p></p>
 </body>
 </html>
